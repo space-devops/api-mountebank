@@ -1,7 +1,7 @@
 package responses
 
 type Wrapper struct {
-	CorrelationId int         `json:"correlation_id"`
+	CorrelationId string      `json:"correlation_id"`
 	Timestamp     string      `json:"timestamp"`
 	Payload       interface{} `json:"payload"`
 }

@@ -4,7 +4,7 @@ import "log"
 
 type WrapperResponseBuilderInterface interface {
 	CreateWrapperResponse()
-	WithCorrelationId(correlationId int)
+	WithCorrelationId(correlationId string)
 	WithTimestamp(timestamp string)
 	WithPayload(payload interface{})
 	BuildResponse() *Wrapper
@@ -19,7 +19,7 @@ func (wrb *WrapperResponseBuilder) CreateWrapperResponse() {
 	wrb.wrapper = wr
 }
 
-func (wrb *WrapperResponseBuilder) WithCorrelationId(correlationId int) {
+func (wrb *WrapperResponseBuilder) WithCorrelationId(correlationId string) {
 	if wrb.wrapper == nil {
 		log.Fatal("WrapperResponseBuilder should be initialized first before assign values.")
 	}

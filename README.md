@@ -9,3 +9,11 @@ curl -sS -H "Content-Type: application/json"\
          -H "Accept: application/json"\
          -X GET http://localhost:3000/ | jq .
 ```
+
+#### Display Response Headers
+
+```bash
+curl -vsS -H "Content-Type: application/json" \
+          -H "Accept: application/json"\
+          -X GET http://localhost:3000/ | jq .
+```
