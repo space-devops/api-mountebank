@@ -9,7 +9,7 @@ import (
 func WelcomeHandler(w http.ResponseWriter, r *http.Request) {
 	wr := utils.BuildApiResponse(http.StatusOK,
 		"Welcome to Mountebank Sidecar",
-		3001)
+		utils.GenerateCorrelationId())
 
 	jr, je := json.Marshal(wr)
 	if je != nil {
