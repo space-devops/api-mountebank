@@ -8,7 +8,6 @@ import (
 	"github.com/space-devops/mountebank-sidecar/pkg/utils"
 	"log"
 	"net/http"
-	"time"
 )
 
 func main() {
@@ -23,8 +22,8 @@ func main() {
 	srv := &http.Server{
 		Handler:      r,
 		Addr:         fmt.Sprintf(":%d", utils.ServerPort),
-		WriteTimeout: 15 * time.Second,
-		ReadTimeout:  15 * time.Second,
+		WriteTimeout: utils.ServerWriteTimeout,
+		ReadTimeout:  utils.ServerReadTimeout,
 	}
 
 	log.Fatal(srv.ListenAndServe())
