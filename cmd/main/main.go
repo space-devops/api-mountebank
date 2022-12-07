@@ -4,14 +4,15 @@ import (
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/space-devops/mountebank-sidecar/pkg/handlers"
+	"github.com/space-devops/mountebank-sidecar/pkg/logger"
 	"github.com/space-devops/mountebank-sidecar/pkg/middleware"
 	"github.com/space-devops/mountebank-sidecar/pkg/utils"
-	"log"
 	"net/http"
 )
 
 func main() {
 	fmt.Println("Hello world from Golang")
+	logger.InitLogger()
 
 	r := mux.NewRouter()
 
@@ -26,5 +27,7 @@ func main() {
 		ReadTimeout:  utils.ServerReadTimeout,
 	}
 
-	log.Fatal(srv.ListenAndServe())
+	if err := srv.ListenAndServe(); err != nil {
+		logger.LogPanic(err.Error(), "")
+	}
 }
