@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/space-devops/mountebank-sidecar/pkg/config"
 	"github.com/space-devops/mountebank-sidecar/pkg/handlers"
 	"github.com/space-devops/mountebank-sidecar/pkg/logger"
 	"github.com/space-devops/mountebank-sidecar/pkg/middleware"
@@ -11,8 +12,9 @@ import (
 )
 
 func main() {
-	fmt.Println("Hello world from Golang")
-	logger.InitLogger()
+	cfg := config.GetConfig()
+	logger.InitLogger(cfg.Logger.File)
+	logger.SetLogLevel(cfg.Logger.Level)
 
 	r := mux.NewRouter()
 
@@ -22,12 +24,15 @@ func main() {
 
 	srv := &http.Server{
 		Handler:      r,
-		Addr:         fmt.Sprintf(":%d", utils.ServerPort),
-		WriteTimeout: utils.ServerWriteTimeout,
-		ReadTimeout:  utils.ServerReadTimeout,
+		Addr:         fmt.Sprintf(":%d", cfg.Server.Port),
+		WriteTimeout: utils.IntToSeconds(cfg.Server.WriteTimeoutSeconds),
+		ReadTimeout:  utils.IntToSeconds(cfg.Server.ReadTimeoutSeconds),
 	}
 
+	msg := fmt.Sprintf("Mountebank adapter listening on port %d", cfg.Server.Port)
+	logger.LogDebug(msg, utils.NoCorrelationId)
+
 	if err := srv.ListenAndServe(); err != nil {
-		logger.LogPanic(err.Error(), "")
+		logger.LogPanic(err.Error(), utils.NoCorrelationId)
 	}
 }

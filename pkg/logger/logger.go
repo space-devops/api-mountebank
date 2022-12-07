@@ -14,7 +14,7 @@ type LogExtraInfo struct {
 	Value interface{}
 }
 
-func InitLogger() {
+func InitLogger(loggerFile string) {
 	logLevel = zap.NewAtomicLevel()
 	logLevel.SetLevel(zapcore.DebugLevel)
 
@@ -25,7 +25,7 @@ func InitLogger() {
 	fileEncoder := zapcore.NewJSONEncoder(encoderCfg)
 	consoleEncoder := zapcore.NewConsoleEncoder(encoderCfg)
 
-	logFile, _ := os.OpenFile("log.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	logFile, _ := os.OpenFile(loggerFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	writer := zapcore.AddSync(logFile)
 
 	core := zapcore.NewTee(
@@ -87,10 +87,16 @@ func LogPanic(message string, correlationId string, extraInfo ...LogExtraInfo) {
 func logEntry(lvl zapcore.Level, message string, correlationId string, extraInfo ...LogExtraInfo) {
 	defer myLogger.Sync()
 
-	for _, info := range extraInfo {
+	if len(extraInfo) > 0 {
+		for _, info := range extraInfo {
+			myLogger.Log(lvl, message,
+				zap.String("correlationId", correlationId),
+				zap.Any(info.Key, info.Value),
+			)
+		}
+	} else {
 		myLogger.Log(lvl, message,
 			zap.String("correlationId", correlationId),
-			zap.Any(info.Key, info.Value),
 		)
 	}
 }
