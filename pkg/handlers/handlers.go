@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"github.com/space-devops/mountebank-sidecar/pkg/config"
 	"github.com/space-devops/mountebank-sidecar/pkg/logger"
 	"github.com/space-devops/mountebank-sidecar/pkg/utils"
 	"net/http"
@@ -13,7 +14,7 @@ func WelcomeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	cid := r.Context().Value(utils.CorrelationIdHeaderName).(string)
+	cid := r.Context().Value(config.GetConfig().Global.CorrelationIdHeader).(string)
 
 	wr := utils.BuildApiResponse(http.StatusOK,
 		"Welcome to Mountebank Sidecar",

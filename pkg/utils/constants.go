@@ -1,10 +1,18 @@
 package utils
 
-import "time"
-
 const (
-	ServerPort              = 3000
-	ServerWriteTimeout      = 15 * time.Second
-	ServerReadTimeout       = 15 * time.Second
+	ServerPort              = 2000
+	ServerWriteTimeout      = 15
+	ServerReadTimeout       = 15
 	CorrelationIdHeaderName = "X-Internal-Correlation-ID"
+	NoCorrelationId         = "global"
+	LoggerFileName          = "default.log"
+	LoggerLevel             = "debug"
+
+	ConfigFileName      = "config"
+	ConfigFileExtension = "yaml"
+)
+
+var (
+	ConfigFilePaths = [3]string{"./config", "$HOME/.config", "."}
 )

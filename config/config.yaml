@@ -1,0 +1,11 @@
+global:
+  correlationIdHeader: "X-Internal-Correlation-ID"
+
+server:
+  port: 3000
+  readTimeoutSeconds: 15
+  writeTimeoutSeconds: 15
+
+logger:
+  file: log/log.log
+  level: debug
