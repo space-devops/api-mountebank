@@ -14,5 +14,5 @@ const (
 )
 
 var (
-	ConfigFilePaths = [3]string{"./config", "$HOME/.config", "."}
+	ConfigFilePaths = [3]string{"./config", "$HOME/.imposters", "."}
 )

@@ -1,8 +1,10 @@
 package logger
 
 import (
+	"fmt"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
+	"log"
 	"os"
 )
 
@@ -25,7 +27,13 @@ func InitLogger(loggerFile string) {
 	fileEncoder := zapcore.NewJSONEncoder(encoderCfg)
 	consoleEncoder := zapcore.NewConsoleEncoder(encoderCfg)
 
-	logFile, _ := os.OpenFile(loggerFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	logFile, err := os.OpenFile(loggerFile, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+
+	if err != nil {
+		msg := fmt.Sprintf("Error while creating logger file: %v", err)
+		log.Fatal(msg)
+	}
+
 	writer := zapcore.AddSync(logFile)
 
 	core := zapcore.NewTee(
