@@ -1,5 +1,5 @@
 global:
-  correlationIdHeader: "X-Internal-Correlation-ID"
+  correlationIdHeader: "X-Internal-Correlation-ID-x"
 
 server:
   port: 3000
@@ -7,5 +7,5 @@ server:
   writeTimeoutSeconds: 15
 
 logger:
-  file: log/log.log
+  file: /home/nonroot/outputs/outputs.log
   level: debug

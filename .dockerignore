@@ -16,7 +16,6 @@
 .idea/**/contentModel.xml
 
 # Sensitive or high-churn files
-.idea/
 .idea/**/dataSources/
 .idea/**/dataSources.ids
 .idea/**/dataSources.local.xml
@@ -95,39 +94,15 @@ fabric.properties
 # Output of the go coverage tool, specifically when used with LiteIDE
 *.out
 
-*.log
-
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
 # Go workspace file
 go.work
 
-### Go.AllowList template
-# Allowlisting gitignore template for GO projects prevents us
-# from adding various unwanted local files, such as generated
-# files, developer configurations or IDE-specific files etc.
-#
-# Recommended: Go.AllowList.gitignore
-
-# Ignore everything
-*
-
-# But not these files...
-!/.gitignore
-!Dockerfile
-!.dockerignore
-!docker-compose.yaml
-!*.go
-!go.sum
-!go.mod
-
-!README.md
-!LICENSE
-!config/**
-
-# !Makefile
-
-# ...even if they are in subdirectories
-!*/
-
+log
+config
+.gitignore
+docker-compose.yaml
+LICENSE
+README.md

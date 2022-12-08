@@ -1,0 +1,26 @@
+version: "3.9"
+services:
+  mountebank:
+    image: "bbyars/mountebank:2.8.1"
+    ports:
+      - "2525:2525"
+      - "4545-4560:4545-4560"
+    command:
+      - "start"
+    networks:
+      - imposters
+
+  sidecar:
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - "2000:2000"
+      - "3000-4000:3000-4000"
+    volumes:
+      - "./config:/home/nonroot/.imposters"
+      - "./log:/home/nonroot/outputs"
+    networks:
+      - imposters
+
+networks:
+  imposters:
