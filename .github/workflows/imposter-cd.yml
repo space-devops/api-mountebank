@@ -2,6 +2,9 @@ name: "Api Imposters CI"
 
 on:
   push:
+    push:
+      tags:
+        - release/*
     branches:
       - main
 
@@ -25,9 +28,7 @@ jobs:
             ${{ env.REGISTRY_HUB_NAMESPACE }}/${{ env.REGISTRY_IMAGE_NAME }}
           tags: |
             type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
+            type=match, pattern=release/v(\d.\d.\d), group=1
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v2
