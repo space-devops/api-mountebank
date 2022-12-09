@@ -5,7 +5,7 @@ on:
 
 env:
   REGISTRY_HUB_NAMESPACE: ${{ secrets.DOCKER_HUB_NAMESPACE }}
-  REGISTRY_IMAGE_NAME: mountebank-imposters
+  REGISTRY_IMAGE_NAME: api-mountebank
 
 jobs:
   integration:
