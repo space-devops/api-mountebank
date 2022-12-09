@@ -121,6 +121,7 @@ go.work
 !*.go
 !go.sum
 !go.mod
+!.github/workflows/**
 
 !README.md
 !LICENSE
