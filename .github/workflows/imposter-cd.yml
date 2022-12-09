@@ -2,9 +2,8 @@ name: "Api Imposters CI"
 
 on:
   push:
-    push:
-      tags:
-        - release/*
+    tags:
+      - release/*
     branches:
       - main
 
