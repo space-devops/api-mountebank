@@ -1,8 +1,8 @@
 package handlers
 
 import (
+	"github.com/gorilla/mux"
 	"github.com/space-devops/mountebank-sidecar/pkg/logger"
-	"github.com/space-devops/mountebank-sidecar/pkg/objects"
 	"github.com/space-devops/mountebank-sidecar/pkg/utils"
 	"net/http"
 )
@@ -35,6 +35,14 @@ func WelcomeHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetPlanetListHandler(w http.ResponseWriter, r *http.Request) {
+	getHandler(w, r, false)
+}
+
+func GetPlanetHandler(w http.ResponseWriter, r *http.Request) {
+	getHandler(w, r, true)
+}
+
+func getHandler(w http.ResponseWriter, r *http.Request, pathVariable bool) {
 	if IsGetMethod(r) {
 		AddStatusCode(&w, http.StatusMethodNotAllowed)
 		return
@@ -42,6 +50,10 @@ func GetPlanetListHandler(w http.ResponseWriter, r *http.Request) {
 
 	cid := ExtractCID(r)
 	surl := GetServiceURL("list")
+	if pathVariable {
+		planet := mux.Vars(r)["planet"]
+		surl = GetServiceURL(planet)
+	}
 
 	bodyBytes, err := CallService(http.MethodGet, surl, r)
 	if err != nil {
@@ -49,18 +61,7 @@ func GetPlanetListHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var planetList objects.PlanetList
-	if err = utils.JsonObjectToObject(bodyBytes, &planetList, cid); err != nil {
-		http.Error(w, "Error unmarshalling responses", http.StatusInternalServerError)
-		return
-	}
-
-	func() {
-		logger.LogInfo("WelcomeHandler finished successfully", cid, logger.LogExtraInfo{
-			Key:   "Response",
-			Value: planetList,
-		})
-	}()
+	LogResponse(w, bodyBytes, cid, pathVariable)
 
 	createResponse(&w, bodyBytes)
 }

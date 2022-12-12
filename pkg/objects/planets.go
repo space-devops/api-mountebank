@@ -9,6 +9,10 @@ type PlanetList struct {
 	Planets []Planets `json:"planets"`
 }
 
+type PlanetWrapper struct {
+	Planet Planet `json:"planet"`
+}
+
 type Planet struct {
 	Id         int      `json:"id"`
 	Name       string   `json:"name"`
@@ -21,21 +25,21 @@ type Planet struct {
 }
 
 type Radius struct {
-	Value float64 `json:"value"`
-	Unit  string  `json:"metric_unit"`
+	Value string `json:"value"`
+	Unit  string `json:"metric_unit"`
 }
 
 type Mass struct {
-	Value float64 `json:"value"`
-	Unit  string  `json:"metric_unit"`
+	Value string `json:"value"`
+	Unit  string `json:"metric_unit"`
 }
 
 type Volume struct {
-	Value float64 `json:"value"`
-	Unit  string  `json:"metric_unit"`
+	Value string `json:"value"`
+	Unit  string `json:"metric_unit"`
 }
 
 type Density struct {
-	Value float64 `json:"value"`
-	Unit  string  `json:"metric_unit"`
+	Value string `json:"value"`
+	Unit  string `json:"metric_unit"`
 }
