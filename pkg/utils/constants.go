@@ -8,6 +8,7 @@ const (
 	NoCorrelationId         = "global"
 	LoggerFileName          = "default.log"
 	LoggerLevel             = "debug"
+	DefaultContentType      = "application/json"
 
 	ConfigFileName      = "config"
 	ConfigFileExtension = "yaml"

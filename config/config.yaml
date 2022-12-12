@@ -1,5 +1,5 @@
 global:
-  correlationIdHeader: "X-Internal-Correlation-ID-x"
+  correlationIdHeader: "X-Internal-Correlation-ID"
 
 server:
   port: 3000
@@ -9,3 +9,10 @@ server:
 logger:
   file: /home/nonroot/outputs/outputs.log
   level: debug
+
+mountebank:
+  host: localhost
+  imposters:
+    - name: list
+      path: v1/planets
+      port: 4545
