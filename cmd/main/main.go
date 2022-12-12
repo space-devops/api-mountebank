@@ -22,6 +22,7 @@ func main() {
 
 	r.HandleFunc("/", handlers.WelcomeHandler).GetHandler()
 	r.HandleFunc("/planets", handlers.GetPlanetListHandler).GetHandler()
+	r.HandleFunc("/planet/{planet}", handlers.GetPlanetHandler).GetHandler()
 
 	srv := &http.Server{
 		Handler:      r,

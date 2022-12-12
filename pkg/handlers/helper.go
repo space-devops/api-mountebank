@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/space-devops/mountebank-sidecar/pkg/config"
 	"github.com/space-devops/mountebank-sidecar/pkg/logger"
+	"github.com/space-devops/mountebank-sidecar/pkg/objects"
 	"github.com/space-devops/mountebank-sidecar/pkg/utils"
 	"io"
 	"net/http"
@@ -83,4 +84,34 @@ func CallService(method string, url string, req *http.Request) ([]byte, error) {
 	}
 
 	return bodyBytes, nil
+}
+
+func LogResponse(w http.ResponseWriter, bodyBytes []byte, cid string, pathVariable bool) {
+	if pathVariable {
+		var planet objects.PlanetWrapper
+		if err := utils.JsonObjectToObject(bodyBytes, &planet, cid); err != nil {
+			http.Error(w, "Error unmarshalling responses", http.StatusInternalServerError)
+			return
+		}
+
+		func() {
+			logger.LogInfo("GetHandlers finished successfully", cid, logger.LogExtraInfo{
+				Key:   "Response",
+				Value: planet,
+			})
+		}()
+	} else {
+		var planetList objects.PlanetList
+		if err := utils.JsonObjectToObject(bodyBytes, &planetList, cid); err != nil {
+			http.Error(w, "Error unmarshalling responses", http.StatusInternalServerError)
+			return
+		}
+
+		func() {
+			logger.LogInfo("GetHandlers finished successfully", cid, logger.LogExtraInfo{
+				Key:   "Response",
+				Value: planetList,
+			})
+		}()
+	}
 }
