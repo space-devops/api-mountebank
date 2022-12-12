@@ -21,6 +21,7 @@ func main() {
 	r.Use(middleware.CorrelationMiddleware)
 
 	r.HandleFunc("/", handlers.WelcomeHandler).GetHandler()
+	r.HandleFunc("/planets", handlers.GetPlanetListHandler).GetHandler()
 
 	srv := &http.Server{
 		Handler:      r,
