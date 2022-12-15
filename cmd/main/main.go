@@ -24,8 +24,8 @@ func main() {
 	r.HandleFunc("/planets", handlers.GetPlanetListHandler).GetHandler()
 	r.HandleFunc("/planet/{planet}", handlers.GetPlanetHandler).GetHandler()
 
-	r.HandleFunc("/live", (*handlers.HealthcheckHandler()).LiveEndpoint).GetHandler()
-	r.HandleFunc("/ready", (*handlers.HealthcheckHandler()).ReadyEndpoint).GetHandler()
+	r.HandleFunc("/live", handlers.LivenessHandler).GetHandler()
+	r.HandleFunc("/ready", handlers.ReadinessHandler).GetHandler()
 
 	srv := &http.Server{
 		Handler:      r,

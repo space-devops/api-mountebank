@@ -14,7 +14,7 @@ mountebank:
   host: mountebank
   health:
     port: 2525
-    path: /config
+    path: config/
   imposters:
     - name: list
       path: v1/planets
