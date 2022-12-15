@@ -25,12 +25,16 @@ func HealthcheckHandler() *healthcheck.Handler {
 
 	upstreamAddr := fmt.Sprintf("%s:%d", host, port)
 
-	mesg := fmt.Sprintf("Readiness upstream service %s", upstreamAddr)
-	logger.LogInfo(mesg, utils.NoCorrelationId)
+	msg := fmt.Sprintf("Readiness upstream service %s", upstreamAddr)
+	logger.LogInfo(msg, utils.NoCorrelationId)
 
 	health.AddReadinessCheck(
 		"upstream-dep-tcp",
-		healthcheck.Async(healthcheck.TCPDialCheck(upstreamAddr, 50*time.Millisecond), 10*time.Second))
+		healthcheck.Timeout(func() error {
+			// Simulate some work that could take a long time
+			time.Sleep(time.Millisecond * 10)
+			return nil
+		}, 5*time.Millisecond))
 
 	// Implement a custom check with a 50 millisecond timeout.
 	health.AddLivenessCheck("custom-check-with-timeout", healthcheck.Timeout(func() error {
