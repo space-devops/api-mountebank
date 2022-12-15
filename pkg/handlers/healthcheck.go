@@ -21,9 +21,9 @@ func HealthcheckHandler() *healthcheck.Handler {
 	// load on upstream services).
 	host := config.GetConfig().Mountebank.Host
 	port := config.GetConfig().Mountebank.Health.Port
-	path := config.GetConfig().Mountebank.Health.Path
+	_ = config.GetConfig().Mountebank.Health.Path
 
-	upstreamAddr := buildServiceURL(host, port, path)
+	upstreamAddr := fmt.Sprintf("%s:%d", host, port)
 
 	mesg := fmt.Sprintf("Readiness upstream service %s", upstreamAddr)
 	logger.LogInfo(mesg, utils.NoCorrelationId)
