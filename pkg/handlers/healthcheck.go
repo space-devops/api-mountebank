@@ -39,5 +39,8 @@ func HealthcheckHandler() *healthcheck.Handler {
 		return nil
 	}, 50*time.Millisecond))
 
+	// Sleep for just a moment to make sure our Async handler had a chance to run
+	time.Sleep(500 * time.Millisecond)
+
 	return &health
 }
