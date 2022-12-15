@@ -2,49 +2,61 @@ package handlers
 
 import (
 	"fmt"
-	"github.com/heptiolabs/healthcheck"
 	"github.com/space-devops/mountebank-sidecar/pkg/config"
 	"github.com/space-devops/mountebank-sidecar/pkg/logger"
 	"github.com/space-devops/mountebank-sidecar/pkg/utils"
-	"time"
+	"net/http"
 )
 
-func HealthcheckHandler() *healthcheck.Handler {
-	// Create a Handler that we can use to register liveness and readiness checks.
-	health := healthcheck.NewHandler()
+func ReadinessHandler(w http.ResponseWriter, r *http.Request) {
+	if IsGetMethod(r) {
+		AddStatusCode(&w, http.StatusMethodNotAllowed)
+		return
+	}
 
-	// Make sure we can connect to an upstream dependency over TCP in less than
-	// 50ms. Run this check asynchronously in the background every 10 seconds
-	// instead of every time the /ready or /live endpoints are hit.
-	//
-	// Async is useful whenever a check is expensive (especially if it causes
-	// load on upstream services).
 	host := config.GetConfig().Mountebank.Host
 	port := config.GetConfig().Mountebank.Health.Port
-	_ = config.GetConfig().Mountebank.Health.Path
+	path := config.GetConfig().Mountebank.Health.Path
 
-	upstreamAddr := fmt.Sprintf("%s:%d", host, port)
+	upstream := buildServiceURL(host, port, path)
 
-	msg := fmt.Sprintf("Readiness upstream service %s", upstreamAddr)
-	logger.LogInfo(msg, utils.NoCorrelationId)
+	logger.LogInfo(
+		fmt.Sprintf("Healthcheck upstream service: %s", upstream),
+		utils.NoCorrelationId,
+	)
 
-	health.AddReadinessCheck(
-		"upstream-dep-tcp",
-		healthcheck.Timeout(func() error {
-			// Simulate some work that could take a long time
-			time.Sleep(time.Millisecond * 10)
-			return nil
-		}, 5*time.Millisecond))
+	bodyBytes, err := CallService(http.MethodGet, upstream, r)
+	if err != nil {
+		http.Error(w, "Error while calling external service", http.StatusInternalServerError)
+		return
+	}
 
-	// Implement a custom check with a 50 millisecond timeout.
-	health.AddLivenessCheck("custom-check-with-timeout", healthcheck.Timeout(func() error {
-		// Simulate some work that could take a long time
-		time.Sleep(time.Millisecond * 100)
-		return nil
-	}, 50*time.Millisecond))
+	createResponse(&w, bodyBytes)
+}
 
-	// Sleep for just a moment to make sure our Async handler had a chance to run
-	time.Sleep(500 * time.Millisecond)
+func LivenessHandler(w http.ResponseWriter, r *http.Request) {
+	if IsGetMethod(r) {
+		AddStatusCode(&w, http.StatusMethodNotAllowed)
+		return
+	}
 
-	return &health
+	cid := utils.NoCorrelationId
+	wr := utils.BuildApiResponse(http.StatusOK,
+		"Liveness probe for kubernetes healthcheck system",
+		cid)
+
+	defer func() {
+		logger.LogInfo("Liveness probe handler finished successfully", cid, logger.LogExtraInfo{
+			Key:   "Response",
+			Value: wr,
+		})
+	}()
+
+	obj, err := utils.ObjectToJsonObject(wr, cid)
+	if err != nil {
+		http.Error(w, "Error marshalling responses on liveness handler", http.StatusInternalServerError)
+		return
+	}
+
+	createResponse(&w, obj)
 }
