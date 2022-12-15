@@ -1,8 +1,11 @@
 package handlers
 
 import (
+	"fmt"
 	"github.com/heptiolabs/healthcheck"
 	"github.com/space-devops/mountebank-sidecar/pkg/config"
+	"github.com/space-devops/mountebank-sidecar/pkg/logger"
+	"github.com/space-devops/mountebank-sidecar/pkg/utils"
 	"time"
 )
 
@@ -21,6 +24,10 @@ func HealthcheckHandler() *healthcheck.Handler {
 	path := config.GetConfig().Mountebank.Health.Path
 
 	upstreamAddr := buildServiceURL(host, port, path)
+
+	mesg := fmt.Sprintf("Readiness upstream service %s", upstreamAddr)
+	logger.LogInfo(mesg, utils.NoCorrelationId)
+
 	health.AddReadinessCheck(
 		"upstream-dep-tcp",
 		healthcheck.Async(healthcheck.TCPDialCheck(upstreamAddr, 50*time.Millisecond), 10*time.Second))
