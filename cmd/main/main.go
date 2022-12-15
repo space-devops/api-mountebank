@@ -20,7 +20,7 @@ func main() {
 
 	r.Use(middleware.CorrelationMiddleware)
 
-	r.HandleFunc("/", handlers.WelcomeHandler).GetHandler()
+	r.HandleFunc("/", handlers.GetPlanetListHandler).GetHandler()
 	r.HandleFunc("/planets", handlers.GetPlanetListHandler).GetHandler()
 	r.HandleFunc("/planet/{planet}", handlers.GetPlanetHandler).GetHandler()
 
