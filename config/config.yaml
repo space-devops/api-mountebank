@@ -12,6 +12,9 @@ logger:
 
 mountebank:
   host: mountebank
+  health:
+    port: 2525
+    path: /config
   imposters:
     - name: list
       path: v1/planets

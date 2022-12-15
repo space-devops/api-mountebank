@@ -17,7 +17,13 @@ type GlobalConfig struct {
 
 type MountebankConfig struct {
 	Host      string            `yaml:"host"`
+	Health    HealthConfig      `yaml:"health"`
 	Imposters []ImpostersConfig `yaml:"imposters"`
+}
+
+type HealthConfig struct {
+	Port int    `yaml:"port"`
+	Path string `yaml:"path"`
 }
 
 type ImpostersConfig struct {

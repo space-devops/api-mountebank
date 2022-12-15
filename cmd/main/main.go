@@ -24,6 +24,9 @@ func main() {
 	r.HandleFunc("/planets", handlers.GetPlanetListHandler).GetHandler()
 	r.HandleFunc("/planet/{planet}", handlers.GetPlanetHandler).GetHandler()
 
+	r.HandleFunc("/live", (*handlers.HealthcheckHandler()).LiveEndpoint).GetHandler()
+	r.HandleFunc("/ready", (*handlers.HealthcheckHandler()).ReadyEndpoint).GetHandler()
+
 	srv := &http.Server{
 		Handler:      r,
 		Addr:         fmt.Sprintf(":%d", cfg.Server.Port),
