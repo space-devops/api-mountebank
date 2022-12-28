@@ -2,9 +2,9 @@ package handlers
 
 import (
 	"fmt"
-	"github.com/space-devops/mountebank-sidecar/pkg/config"
-	"github.com/space-devops/mountebank-sidecar/pkg/logger"
-	"github.com/space-devops/mountebank-sidecar/pkg/utils"
+	"github.com/space-devops/api-mountebank/pkg/config"
+	"github.com/space-devops/api-mountebank/pkg/logger"
+	"github.com/space-devops/api-mountebank/pkg/utils"
 	"net/http"
 )
 

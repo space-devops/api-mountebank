@@ -2,7 +2,8 @@ package utils
 
 import (
 	"encoding/json"
-	"github.com/space-devops/mountebank-sidecar/pkg/logger"
+	"github.com/space-devops/api-mountebank/pkg/logger"
+
 	"time"
 )
 

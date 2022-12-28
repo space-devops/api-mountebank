@@ -1,4 +1,4 @@
-module github.com/space-devops/mountebank-sidecar
+module github.com/space-devops/api-mountebank
 
 go 1.19
 

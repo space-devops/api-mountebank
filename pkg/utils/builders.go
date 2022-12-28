@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"github.com/space-devops/mountebank-sidecar/pkg/responses"
+	"github.com/space-devops/api-mountebank/pkg/responses"
 	"time"
 )
 
