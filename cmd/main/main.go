@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/mux"
-	"github.com/space-devops/mountebank-sidecar/pkg/config"
-	"github.com/space-devops/mountebank-sidecar/pkg/handlers"
-	"github.com/space-devops/mountebank-sidecar/pkg/logger"
-	"github.com/space-devops/mountebank-sidecar/pkg/middleware"
-	"github.com/space-devops/mountebank-sidecar/pkg/utils"
+	"github.com/space-devops/api-mountebank/pkg/config"
+	"github.com/space-devops/api-mountebank/pkg/handlers"
+	"github.com/space-devops/api-mountebank/pkg/logger"
+	"github.com/space-devops/api-mountebank/pkg/middleware"
+	"github.com/space-devops/api-mountebank/pkg/utils"
 	"net/http"
 )
 
