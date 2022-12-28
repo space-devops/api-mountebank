@@ -35,7 +35,7 @@ jobs:
           username: ${{ secrets.DOCKER_REPO_USERNAME }}
           password: ${{ secrets.DOCKER_REPO_PASSWORD }}
 
-      - name: Build and Dry-run
+      - name: Build and Publish
         uses: docker/build-push-action@v3
         with:
           context: .
