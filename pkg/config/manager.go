@@ -46,9 +46,11 @@ func readConfigFile() *Configurations {
 }
 
 func setConfigDefaults() {
-	viper.SetDefault("server.port", utils.ServerPort)
-	viper.SetDefault("server.readTimeoutSeconds", utils.ServerReadTimeout)
-	viper.SetDefault("server.writeTimeoutSeconds", utils.ServerWriteTimeout)
+	viper.SetDefault("server.http.port", utils.ServerPort)
+	viper.SetDefault("server.http.readTimeoutSeconds", utils.ServerReadTimeout)
+	viper.SetDefault("server.http.writeTimeoutSeconds", utils.ServerWriteTimeout)
+
+	viper.SetDefault("server.grpc.port", utils.GrpcServerPort)
 
 	viper.SetDefault("logger.file", utils.LoggerFileName)
 	viper.SetDefault("logger.level", utils.LoggerLevel)

@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+import "proto/planetwelcome.proto";
+import "proto/planetlist.proto";
+import "proto/planetdetails.proto";
+
+package space;
+
+option go_package = "/space";
+
+service PlanetService {
+  rpc getWelcome (google.protobuf.Empty) returns (WelcomeMessage);
+  rpc getPlanetList(google.protobuf.Empty) returns (PlanetList);
+  rpc getPlanetDetails(google.protobuf.StringValue) returns (PlanetDetails);
+}

@@ -1,20 +1,23 @@
-package responses
+package builder
 
-import "log"
+import (
+	"github.com/space-devops/api-mountebank/pkg/responses"
+	"log"
+)
 
 type ServerResponseInterface interface {
 	CreateServerResponse()
 	WithInternalCode(code int)
 	WithMessage(message interface{})
-	BuildResponse() *ServerResponse
+	BuildResponse() *responses.ServerResponse
 }
 
 type ServerResponseBuilder struct {
-	serverResponse *ServerResponse
+	serverResponse *responses.ServerResponse
 }
 
 func (srb *ServerResponseBuilder) CreateServerResponse() {
-	nr := new(ServerResponse)
+	nr := new(responses.ServerResponse)
 	srb.serverResponse = nr
 }
 
@@ -34,7 +37,7 @@ func (srb *ServerResponseBuilder) WithMessage(message interface{}) {
 	srb.serverResponse.Message = message
 }
 
-func (srb *ServerResponseBuilder) BuildResponse() *ServerResponse {
+func (srb *ServerResponseBuilder) BuildResponse() *responses.ServerResponse {
 	if srb.serverResponse == nil {
 		log.Fatal("ServerResponseBuilder should be initialized first before assign values.")
 	}

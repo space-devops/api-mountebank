@@ -2,6 +2,8 @@ package handlers
 
 import (
 	"fmt"
+	"github.com/space-devops/api-mountebank/pkg/builder"
+	"github.com/space-devops/api-mountebank/pkg/client"
 	"github.com/space-devops/api-mountebank/pkg/config"
 	"github.com/space-devops/api-mountebank/pkg/logger"
 	"github.com/space-devops/api-mountebank/pkg/utils"
@@ -9,8 +11,8 @@ import (
 )
 
 func ReadinessHandler(w http.ResponseWriter, r *http.Request) {
-	if IsGetMethod(r) {
-		AddStatusCode(&w, http.StatusMethodNotAllowed)
+	if client.IsGetMethod(r) {
+		client.AddStatusCode(&w, http.StatusMethodNotAllowed)
 		return
 	}
 
@@ -18,14 +20,14 @@ func ReadinessHandler(w http.ResponseWriter, r *http.Request) {
 	port := config.GetConfig().Mountebank.Health.Port
 	path := config.GetConfig().Mountebank.Health.Path
 
-	upstream := buildServiceURL(host, port, path)
+	upstream := client.BuildServiceURL(host, port, path)
 
 	logger.LogInfo(
 		fmt.Sprintf("Healthcheck upstream service: %s", upstream),
 		utils.NoCorrelationId,
 	)
 
-	bodyBytes, err := CallService(http.MethodGet, upstream, r)
+	bodyBytes, err := client.CallService(http.MethodGet, upstream, client.ExtractCID(r))
 	if err != nil {
 		http.Error(w, "Error while calling external service", http.StatusInternalServerError)
 		return
@@ -35,13 +37,13 @@ func ReadinessHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func LivenessHandler(w http.ResponseWriter, r *http.Request) {
-	if IsGetMethod(r) {
-		AddStatusCode(&w, http.StatusMethodNotAllowed)
+	if client.IsGetMethod(r) {
+		client.AddStatusCode(&w, http.StatusMethodNotAllowed)
 		return
 	}
 
 	cid := utils.NoCorrelationId
-	wr := utils.BuildApiResponse(http.StatusOK,
+	wr := builder.BuildApiResponse(http.StatusOK,
 		"Liveness probe for kubernetes healthcheck system",
 		cid)
 

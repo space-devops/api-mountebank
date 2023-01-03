@@ -1,4 +1,4 @@
-package handlers
+package client
 
 import (
 	"fmt"
@@ -38,24 +38,24 @@ func GetServiceURL(name string) string {
 		if mp.Name == name {
 			host := config.GetConfig().Mountebank.Host
 
-			rt = buildServiceURL(host, mp.Port, mp.Path)
+			rt = BuildServiceURL(host, mp.Port, mp.Path)
 		}
 	}
 
 	return rt
 }
 
-func buildServiceURL(host string, port int, path string) string {
+func BuildServiceURL(host string, port int, path string) string {
 	return fmt.Sprintf("http://%s:%d/%s", host, port, path)
 }
 
-func CallService(method string, url string, req *http.Request) ([]byte, error) {
+func CallService(method string, url string, cid string) ([]byte, error) {
 	client := &http.Client{}
 	req, err := http.NewRequest(method, url, nil)
 	if err != nil {
 		logger.LogPanic(
 			fmt.Sprintf("Cannot create request to %s: %v", url, err),
-			ExtractCID(req),
+			cid,
 		)
 		return nil, err
 	}

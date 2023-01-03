@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/space-devops/api-mountebank/cmd/grpc"
 	"github.com/space-devops/api-mountebank/pkg/config"
 	"github.com/space-devops/api-mountebank/pkg/handlers"
 	"github.com/space-devops/api-mountebank/pkg/logger"
@@ -29,13 +30,15 @@ func main() {
 
 	srv := &http.Server{
 		Handler:      r,
-		Addr:         fmt.Sprintf(":%d", cfg.Server.Port),
-		WriteTimeout: utils.IntToSeconds(cfg.Server.WriteTimeoutSeconds),
-		ReadTimeout:  utils.IntToSeconds(cfg.Server.ReadTimeoutSeconds),
+		Addr:         fmt.Sprintf(":%d", cfg.Server.Http.Port),
+		WriteTimeout: utils.IntToSeconds(cfg.Server.Http.WriteTimeoutSeconds),
+		ReadTimeout:  utils.IntToSeconds(cfg.Server.Http.ReadTimeoutSeconds),
 	}
 
-	msg := fmt.Sprintf("Mountebank adapter listening on port %d", cfg.Server.Port)
+	msg := fmt.Sprintf("Mountebank adapter listening on port %d", cfg.Server.Http.Port)
 	logger.LogDebug(msg, utils.NoCorrelationId)
+
+	go grpc.StartGRPC()
 
 	if err := srv.ListenAndServe(); err != nil {
 		logger.LogPanic(err.Error(), utils.NoCorrelationId)

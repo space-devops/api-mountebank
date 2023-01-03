@@ -1,0 +1,17 @@
+syntax = "proto3";
+package space;
+
+option go_package = "/space";
+
+message WelcomeMessage {
+  string correlation_id = 1;
+  string timestamp = 2;
+  WelcomePayload payload =3;
+}
+
+message WelcomePayload {
+  int32 internal_code = 1;
+  string message = 2;
+}
+
+
