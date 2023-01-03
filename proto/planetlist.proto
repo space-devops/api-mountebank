@@ -1,0 +1,13 @@
+syntax = "proto3";
+package space;
+
+option go_package = "/space";
+
+message PlanetListItem {
+  int32 id = 1;
+  string name = 2;
+}
+
+message PlanetList {
+  repeated PlanetListItem planetList = 1;
+}

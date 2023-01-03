@@ -1,9 +1,18 @@
 package config
 
 type ServerConfig struct {
+	Http HttpConfig `yaml:"http"`
+	Grpc GrpcConfig `yaml:"grpc"`
+}
+
+type HttpConfig struct {
 	Port                int `yaml:"port"`
 	ReadTimeoutSeconds  int `yaml:"readTimeoutSeconds"`
 	WriteTimeoutSeconds int `yaml:"writeTimeoutSeconds"`
+}
+
+type GrpcConfig struct {
+	Port int `yaml:"port"`
 }
 
 type LoggerConfig struct {

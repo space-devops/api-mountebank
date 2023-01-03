@@ -1,4 +1,4 @@
-package utils
+package builder
 
 import (
 	"github.com/space-devops/api-mountebank/pkg/responses"
@@ -11,7 +11,7 @@ func BuildApiResponse(internalCode int, message interface{}, correlationId strin
 }
 
 func buildServerResponse(internalCode int, message interface{}) *responses.ServerResponse {
-	srb := new(responses.ServerResponseBuilder)
+	srb := new(ServerResponseBuilder)
 	srb.CreateServerResponse()
 	srb.WithInternalCode(internalCode)
 	srb.WithMessage(message)
@@ -19,7 +19,7 @@ func buildServerResponse(internalCode int, message interface{}) *responses.Serve
 }
 
 func buildWrapperResponse(correlationId string, payload interface{}) *responses.Wrapper {
-	wrb := new(responses.WrapperResponseBuilder)
+	wrb := new(WrapperResponseBuilder)
 	wrb.CreateWrapperResponse()
 	wrb.WithCorrelationId(correlationId)
 	wrb.WithTimestamp(time.Now().Format(time.RFC1123Z))

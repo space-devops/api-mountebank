@@ -2,9 +2,12 @@ global:
   correlationIdHeader: "X-Internal-Correlation-ID"
 
 server:
-  port: 3000
-  readTimeoutSeconds: 15
-  writeTimeoutSeconds: 15
+  http:
+    port: 3000
+    readTimeoutSeconds: 15
+    writeTimeoutSeconds: 15
+  grpc:
+    port: 6990
 
 logger:
   file: /home/nonroot/outputs/outputs.log

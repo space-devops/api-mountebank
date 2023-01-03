@@ -10,12 +10,13 @@ services:
     networks:
       - imposters
 
-  sidecar:
+  api:
     build:
       dockerfile: Dockerfile
     ports:
       - "2000:2000"
       - "3000-4000:3000-4000"
+      - "6990:6990"
     volumes:
       - "./config:/home/nonroot/.imposters"
       - "./log:/home/nonroot/outputs"

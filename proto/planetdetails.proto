@@ -1,0 +1,35 @@
+syntax = "proto3";
+package space;
+
+option go_package = "/space";
+
+message PlanetDetails {
+  int32 id = 1;
+  string name = 2;
+  string type = 3;
+  EquatorialRadius equatorial_radius = 4;
+  Mass mass = 5;
+  Volume volume = 6;
+  Density density = 7;
+  repeated string satellites = 8;
+}
+
+message EquatorialRadius {
+  string value = 1;
+  string metric_unit = 2;
+}
+
+message Mass {
+  string value = 1;
+  string metric_unit = 2;
+}
+
+message Volume {
+  string value = 1;
+  string metric_unit = 2;
+}
+
+message Density {
+  string value = 1;
+  string metric_unit = 2;
+}

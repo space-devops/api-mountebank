@@ -1,21 +1,24 @@
-package responses
+package builder
 
-import "log"
+import (
+	"github.com/space-devops/api-mountebank/pkg/responses"
+	"log"
+)
 
 type WrapperResponseBuilderInterface interface {
 	CreateWrapperResponse()
 	WithCorrelationId(correlationId string)
 	WithTimestamp(timestamp string)
 	WithPayload(payload interface{})
-	BuildResponse() *Wrapper
+	BuildResponse() *responses.Wrapper
 }
 
 type WrapperResponseBuilder struct {
-	wrapper *Wrapper
+	wrapper *responses.Wrapper
 }
 
 func (wrb *WrapperResponseBuilder) CreateWrapperResponse() {
-	wr := new(Wrapper)
+	wr := new(responses.Wrapper)
 	wrb.wrapper = wr
 }
 
@@ -40,7 +43,7 @@ func (wrb *WrapperResponseBuilder) WithPayload(payload interface{}) {
 	wrb.wrapper.Payload = payload
 }
 
-func (wrb *WrapperResponseBuilder) BuildResponse() *Wrapper {
+func (wrb *WrapperResponseBuilder) BuildResponse() *responses.Wrapper {
 	if wrb.wrapper == nil {
 		log.Fatal("WrapperResponseBuilder should be initialized first before assign values.")
 	}
