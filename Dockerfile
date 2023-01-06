@@ -12,11 +12,12 @@ RUN go mod download
 # Copy the go source
 COPY cmd/ cmd/
 COPY pkg/ pkg/
-RUN mkdir -p .imposters \
+RUN mkdir -p .imposters &&\
+    mkdir -p .creds &&\
     mkdir -p outputs
 
 # Build
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o imposters ./cmd/main/main.go
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -a -o entrypoint ./cmd/main/main.go
 
 # Use distroless as minimal base image to package the manager binary
 # Refer to https://github.com/GoogleContainerTools/distroless for more details
@@ -26,4 +27,4 @@ COPY --from=builder --chown=nonroot:nonroot /go/src/imposter ./
 
 USER 65532:65532
 
-ENTRYPOINT ["/home/nonroot/imposters"]
+ENTRYPOINT ["/home/nonroot/entrypoint"]

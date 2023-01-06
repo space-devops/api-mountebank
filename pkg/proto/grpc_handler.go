@@ -3,6 +3,7 @@ package space
 import (
 	"context"
 	"github.com/space-devops/api-mountebank/pkg/client"
+	"github.com/space-devops/api-mountebank/pkg/config"
 	"github.com/space-devops/api-mountebank/pkg/logger"
 	"github.com/space-devops/api-mountebank/pkg/utils"
 	"google.golang.org/protobuf/types/known/emptypb"
@@ -47,6 +48,16 @@ func (*PlanetServer) GetPlanetDetails(ctx context.Context, param *wrapperspb.Str
 	}
 
 	return BuildPlanetDetails(raw, cid)
+}
+
+func (*PlanetServer) GetSecrets(context.Context, *emptypb.Empty) (*SecretMessage, error) {
+	sm := BuildSecrets(
+		config.GetSecrets(),
+		http.StatusOK,
+		utils.GenerateCorrelationId(),
+	)
+
+	return sm, nil
 }
 
 func (*PlanetServer) mustEmbedUnimplementedPlanetServiceServer() {
