@@ -27,6 +27,7 @@ type PlanetServiceClient interface {
 	GetWelcome(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*WelcomeMessage, error)
 	GetPlanetList(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*PlanetList, error)
 	GetPlanetDetails(ctx context.Context, in *wrapperspb.StringValue, opts ...grpc.CallOption) (*PlanetDetails, error)
+	GetSecrets(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SecretMessage, error)
 }
 
 type planetServiceClient struct {
@@ -64,6 +65,15 @@ func (c *planetServiceClient) GetPlanetDetails(ctx context.Context, in *wrappers
 	return out, nil
 }
 
+func (c *planetServiceClient) GetSecrets(ctx context.Context, in *emptypb.Empty, opts ...grpc.CallOption) (*SecretMessage, error) {
+	out := new(SecretMessage)
+	err := c.cc.Invoke(ctx, "/space.PlanetService/getSecrets", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // PlanetServiceServer is the server API for PlanetService service.
 // All implementations must embed UnimplementedPlanetServiceServer
 // for forward compatibility
@@ -71,6 +81,7 @@ type PlanetServiceServer interface {
 	GetWelcome(context.Context, *emptypb.Empty) (*WelcomeMessage, error)
 	GetPlanetList(context.Context, *emptypb.Empty) (*PlanetList, error)
 	GetPlanetDetails(context.Context, *wrapperspb.StringValue) (*PlanetDetails, error)
+	GetSecrets(context.Context, *emptypb.Empty) (*SecretMessage, error)
 	mustEmbedUnimplementedPlanetServiceServer()
 }
 
@@ -86,6 +97,9 @@ func (UnimplementedPlanetServiceServer) GetPlanetList(context.Context, *emptypb.
 }
 func (UnimplementedPlanetServiceServer) GetPlanetDetails(context.Context, *wrapperspb.StringValue) (*PlanetDetails, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPlanetDetails not implemented")
+}
+func (UnimplementedPlanetServiceServer) GetSecrets(context.Context, *emptypb.Empty) (*SecretMessage, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSecrets not implemented")
 }
 func (UnimplementedPlanetServiceServer) mustEmbedUnimplementedPlanetServiceServer() {}
 
@@ -154,6 +168,24 @@ func _PlanetService_GetPlanetDetails_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _PlanetService_GetSecrets_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(emptypb.Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(PlanetServiceServer).GetSecrets(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/space.PlanetService/getSecrets",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(PlanetServiceServer).GetSecrets(ctx, req.(*emptypb.Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // PlanetService_ServiceDesc is the grpc.ServiceDesc for PlanetService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -172,6 +204,10 @@ var PlanetService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "getPlanetDetails",
 			Handler:    _PlanetService_GetPlanetDetails_Handler,
+		},
+		{
+			MethodName: "getSecrets",
+			Handler:    _PlanetService_GetSecrets_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -12,9 +12,11 @@ const (
 	DefaultContentType      = "application/json"
 
 	ConfigFileName      = "config"
+	SecretFileName      = "secrets"
 	ConfigFileExtension = "yaml"
+	SecretFileExtension = "toml"
 )
 
 var (
-	ConfigFilePaths = [3]string{"./config", "$HOME/.imposters", "."}
+	ConfigFilePaths = [4]string{"./config", "$HOME/.imposters", ".", "$HOME/.creds"}
 )

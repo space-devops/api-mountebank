@@ -24,6 +24,7 @@ func main() {
 	r.HandleFunc("/", handlers.WelcomeHandler).GetHandler()
 	r.HandleFunc("/planets", handlers.GetPlanetListHandler).GetHandler()
 	r.HandleFunc("/planet/{planet}", handlers.GetPlanetHandler).GetHandler()
+	r.HandleFunc("/secrets", handlers.GetSecrets).GetHandler()
 
 	r.HandleFunc("/live", handlers.LivenessHandler).GetHandler()
 	r.HandleFunc("/ready", handlers.ReadinessHandler).GetHandler()
